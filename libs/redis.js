@@ -6,9 +6,12 @@ var redisLink = {
 };
 
 redisLink.check = function(){
+    // console.log(client);
     if(client == null){
         client = redis.createClient(config.redisConfig);
     }else {
+        // client.quit();
+        // client = redis.createClient(config.redisConfig);
         console.log('redis is already connect');
     }
     return client;

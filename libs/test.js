@@ -46,3 +46,8 @@ var redisLink = require('../libs/redis.js');
 //         }));
 //     }
 // });
+
+redisLink.check().set(1,1,function (e,r) {
+    console.log(r);
+})
+

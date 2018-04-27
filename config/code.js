@@ -27,7 +27,18 @@ var code = {
     'redisError': {
         code: 1004,
         message: 'redis数据库错误'
+    },
+    'redisWriteFailed': {
+        code: 1005,
+        message: 'redis数据库写入失败'
+    },
+    'checkLoginFailed': {
+        code: 2003,
+        message: '登录状态验证失败'
+    },
+    'usernameIsAlreadyExisted' :{
+        code:2004,
+        message: '用户名已存在'
     }
-
 };
 module.exports = code;
