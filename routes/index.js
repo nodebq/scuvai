@@ -9,7 +9,7 @@ var upload = require('../controllers/upload.js');
 router.use(function (req, res, next) {
     //提前处理
     // console.log("进入路由");
-    res.setHeader('content-type', 'application/json; charset=UTF-8');
+    // res.setHeader('content-type', 'application/json; charset=UTF-8');
     res.header("Access-Control-Allow-Origin", "*");
     next();
 });
@@ -46,16 +46,15 @@ router.get('/setInfo', function (req, res) {
     profile.set(req, res);
 });
 router.post('/upload', function (req, res, next) {
-    // 以前写的上传文件
     // req.query.userId = 1;
-    //console.log(req.body);
-    //console.log(req.query);
-    //req.query.type = 1;
-    //res.end('666');
-    //return;
-    console.log(req);
+    // console.log(req.body);
+    // console.log(req.query);
+    // req.query.type = 1;
+    // res.end('666');
+    // return 0;
+    // console.log(req);
+    upload.up(req,res);
     return 0;
-    // upload.up(req,res);
 });
 
 module.exports = router;

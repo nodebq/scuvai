@@ -2,3 +2,6 @@ node_modules/*
 config.js
 .idea/*
 npm-debug.log
+avatar/*
+uploads/*
+video/*
