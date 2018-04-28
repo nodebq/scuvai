@@ -5,11 +5,11 @@ var redisLink = {
     //redis 处理模块
 };
 
-redisLink.check = function(){
+redisLink.check = function () {
     // console.log(client);
-    if(client == null){
+    if (client == null) {
         client = redis.createClient(config.redisConfig);
-    }else {
+    } else {
         // client.quit();
         // client = redis.createClient(config.redisConfig);
         console.log('redis is already connect');

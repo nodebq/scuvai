@@ -5,18 +5,19 @@ var check = {
 };
 
 //内部权限验证
-check.do = function (id, token,callback) {
-    if(id && token){
+check.do = function (id, token, callback) {
+    if (id && token) {
         //判断应有参数
+        console.log(id,token);
         redisLink.check().get(id, function (ee, rr) {
             if (ee) {
                 console.log(ee);
             } else {
-                // console.log('没有错误');
-                callback(rr===token);
+                console.log('没有错误');
+                callback(rr === token);
             }
         });
-    }else {
+    } else {
         console.log('参数错误');
     }
 };

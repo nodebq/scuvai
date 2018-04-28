@@ -1,15 +1,15 @@
 var fyscu = {
-    'name':"处理模块"
+    'name': "处理模块"
 };
 
 
 fyscu.format = function (code, message, data) {
     var o = {};
     o.code = code;
-    if(message){
+    if (message) {
         o.message = message;
     }
-    if(data){
+    if (data) {
         o.data = data;
     }
     return JSON.stringify(o);

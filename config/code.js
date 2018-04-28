@@ -36,9 +36,16 @@ var code = {
         code: 2003,
         message: '登录状态验证失败'
     },
-    'usernameIsAlreadyExisted' :{
-        code:2004,
+    'usernameIsAlreadyExisted': {
+        code: 2004,
         message: '用户名已存在'
+    },
+    'dataRedundancy':{
+        code:2005,
+        message:'文件名重复'
+    },'NotFound404': {
+        code: 2006,
+        message: "已有重复文件"
     }
 };
 module.exports = code;
