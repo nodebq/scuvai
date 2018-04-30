@@ -8,6 +8,7 @@ var redisLink = {
 redisLink.check = function () {
     // console.log(client);
     if (client == null) {
+        //console.log(1);
         client = redis.createClient(config.redisConfig);
     } else {
         // client.quit();

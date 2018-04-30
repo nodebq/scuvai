@@ -8,8 +8,9 @@ var check = {
 check.do = function (id, token, callback) {
     if (id && token) {
         //判断应有参数
-        console.log(id,token);
+        //console.log(id,token);
         redisLink.check().get(id, function (ee, rr) {
+            //console.log(1);
             if (ee) {
                 console.log(ee);
             } else {
