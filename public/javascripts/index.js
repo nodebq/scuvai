@@ -8,7 +8,7 @@ $(function () {
         url:"http://127.0.0.1:2245/videoList?videoId=0",
         async:true,
         success: function (data) {
-            console.log(data);
+            //console.log(data);
             data.data.forEach(function (ele) {
                 var $videoItem=$('<div class="video_item"></div>');
                 var $img = $('<img class="video_img" src="../'+ele.video+'" alt="err"/>');
@@ -16,7 +16,15 @@ $(function () {
                 var $title = $('<p class="title">'+ele.title+'</p>');
                 $videoItem.append($title).append($img).append($author);
                 $("section").append($videoItem);
-            })
+            });
+            if(data.data.length<10){
+                var $noMore = $('<p class="loading">没有更多了...</p>');
+                $("section").append($noMore);
+                $('#loading').hide();
+            }else{
+                //滚动监听
+
+            }
         }
     });
     //活动标签页切换

@@ -111,9 +111,10 @@ upload.video = function (req, res) {
                         // var inputFile = 'inputFile';
                         //console.log(files);
                         var uploadedPath = files.file[0].path;
+                        var path = uuid.v1().replace(/-/g, "");
                         // console.log(files.file[0].originalFilename);
                         // var dstPath = './avatar/' + files.file[0].originalFilename;
-                        var dstPath = './video/' + uuid.v1().replace(/-/g, "") + '.' + files.file[0].originalFilename.split(".").pop();
+                        var dstPath = './video/' + path + '.' + files.file[0].originalFilename.split(".").pop();
                         // var path = '..//' + inputFile.originalFilename;
                         //重命名为真实文件名
                         fs.rename(uploadedPath, dstPath, function (err) {
@@ -125,8 +126,8 @@ upload.video = function (req, res) {
                             } else {
                                 console.log('rename ok');
                                 conn.check().query({
-                                    sql: 'insert into video (user_id,video,real_name,title) values (?,?,?,?)',
-                                    values: [fields.userId[0], dstPath,fields.realName[0],fields.title[0]]
+                                    sql: 'insert into video (user_id,video,real_name,title,image) values (?,?,?,?)',
+                                    values: [fields.userId[0], dstPath, fields.realName[0], fields.title[0]]
                                 }, function (e, r) {
                                     if (e) {
                                         console.log(e);
@@ -136,7 +137,6 @@ upload.video = function (req, res) {
                                         res.end(fyscu.out(code.success));
                                     }
                                 });
-                                res.end(fyscu.out(code.success));
                             }
                         });
                     }

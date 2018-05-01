@@ -43,9 +43,14 @@ var code = {
     'dataRedundancy':{
         code:2005,
         message:'文件名重复'
-    },'NotFound404': {
+    },
+    'fileRepeat': {
         code: 2006,
         message: "已有重复文件"
+    },
+    'videoImageError':{
+        code: 2007,
+        message:"生成缩略图出错"
     }
 };
 module.exports = code;
