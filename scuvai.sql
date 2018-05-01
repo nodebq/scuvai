@@ -1,22 +1,40 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50617
+Source Server         : localhost_3306
+Source Server Version : 50520
 Source Host           : localhost:3306
 Source Database       : scuvai
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2018-04-27 18:36:41
+Date: 2018-05-01 23:36:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for test
+-- Table structure for `comment`
+-- ----------------------------
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `comment` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `likes` int(11) NOT NULL DEFAULT '0',
+  `avater` varchar(255) NOT NULL,
+  `video_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of comment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `test`
 -- ----------------------------
 DROP TABLE IF EXISTS `test`;
 CREATE TABLE `test` (
@@ -32,7 +50,7 @@ CREATE TABLE `test` (
 INSERT INTO `test` VALUES ('1', '1', '1');
 
 -- ----------------------------
--- Table structure for user
+-- Table structure for `user`
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -49,7 +67,7 @@ INSERT INTO `user` VALUES ('1', '1', '1');
 INSERT INTO `user` VALUES ('2', '2', '3');
 
 -- ----------------------------
--- Table structure for user_extend
+-- Table structure for `user_extend`
 -- ----------------------------
 DROP TABLE IF EXISTS `user_extend`;
 CREATE TABLE `user_extend` (
@@ -66,16 +84,20 @@ CREATE TABLE `user_extend` (
 -- ----------------------------
 -- Records of user_extend
 -- ----------------------------
-INSERT INTO `user_extend` VALUES ('1', '1', 'bb', 'cc', 'n', '111111', '471');
+INSERT INTO `user_extend` VALUES ('1', '1', 'bb', './avatar/e2187c904c8f11e8b328df484e211e38.png', 'n', '111111', '471');
 
 -- ----------------------------
--- Table structure for video
+-- Table structure for `video`
 -- ----------------------------
 DROP TABLE IF EXISTS `video`;
 CREATE TABLE `video` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `video` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `real_name` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of video
