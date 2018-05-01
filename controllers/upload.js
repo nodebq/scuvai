@@ -20,14 +20,14 @@ upload.up = function (req, res) {
         // console.log(fields.type[0]);
         console.log(fields);
         //console.log(req);
-        if (fields.userId[0] && fields.token[0] && files.file) {
+        if (fields.userId && fields.token && files.file) {
             console.log("ok");
             check.do(fields.userId[0], fields.token[0], function (access) {
                 //console.log(1);
                 if (access) {
                     console.log(access);
                     //验证通过
-                    var filesTmp =JSON.stringify(files, null, 2);//未用到?
+                    var filesTmp = JSON.stringify(files, null, 2);//未用到?
                     if (err) {
                         console.log('parse error: ' + err);
                     } else {
@@ -53,13 +53,13 @@ upload.up = function (req, res) {
                                 //console.log(uploadedPath);
                                 console.log(dstPath);
                                 conn.check().query({
-                                    sql:'update user_extend set avatar=?',
-                                    values:[dstPath]
+                                    sql: 'update user_extend set avatar=?',
+                                    values: [dstPath]
                                 }, function (e, r) {
-                                    if(e){
+                                    if (e) {
                                         console.log(e);
                                         res.end(fyscu.out(code.mysqlError));
-                                    }else{
+                                    } else {
                                         console.log(r);
                                         console.log('头像信息写入数据库成功');
                                         res.end(fyscu.out(code.success));
@@ -94,14 +94,14 @@ upload.video = function (req, res) {
         // console.log(fields.type[0]);
         console.log(fields);
         //console.log(req);
-        if (fields.userId[0] && fields.token[0]&&files.file) {
+        if (fields.userId && fields.token && files.file && fields.realName && fields.title) {
             console.log("ok");
             check.do(fields.userId[0], fields.token[0], function (access) {
                 //console.log(1);
                 if (access) {
                     console.log(access);
                     //验证通过
-                    var filesTmp =JSON.stringify(files, null, 2);//未用到?
+                    var filesTmp = JSON.stringify(files, null, 2);//未用到?
                     if (err) {
                         console.log('parse error: ' + err);
                     } else {
@@ -109,11 +109,11 @@ upload.video = function (req, res) {
                         // console.log(files);
                         // var inputFile = files.inputFile[0];
                         // var inputFile = 'inputFile';
-                        console.log(files);
+                        //console.log(files);
                         var uploadedPath = files.file[0].path;
                         // console.log(files.file[0].originalFilename);
                         // var dstPath = './avatar/' + files.file[0].originalFilename;
-                        var dstPath = './video/' + uuid.v1().replace(/-/g, "") + '.'+ files.file[0].originalFilename.split(".").pop();
+                        var dstPath = './video/' + uuid.v1().replace(/-/g, "") + '.' + files.file[0].originalFilename.split(".").pop();
                         // var path = '..//' + inputFile.originalFilename;
                         //重命名为真实文件名
                         fs.rename(uploadedPath, dstPath, function (err) {
@@ -125,13 +125,13 @@ upload.video = function (req, res) {
                             } else {
                                 console.log('rename ok');
                                 conn.check().query({
-                                    sql:'insert into video (user_id,video) values (?,?)',
-                                    values:[fields.userId[0],dstPath]
+                                    sql: 'insert into video (user_id,video,real_name,title) values (?,?,?,?)',
+                                    values: [fields.userId[0], dstPath,fields.realName[0],fields.title[0]]
                                 }, function (e, r) {
-                                    if(e){
+                                    if (e) {
                                         console.log(e);
                                         res.end(fyscu.out(code.mysqlError));
-                                    }else {
+                                    } else {
                                         console.log('视频信息写入成功');
                                         res.end(fyscu.out(code.success));
                                     }

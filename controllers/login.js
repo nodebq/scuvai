@@ -48,7 +48,7 @@ login.do = function (req, res) {
                                 console.log(rr);
                                 console.log(typeof (rr));
                                 if (rr === 'OK') {
-                                    res.end(fyscu.format(200, 'success', [r[0].id,token]));
+                                    res.end(fyscu.format(200, 'success', [r[0].id, token]));
                                 } else {
                                     res.end(fyscu.out(code.redisWriteFailed));
                                 }
@@ -70,8 +70,8 @@ login.do = function (req, res) {
     return 0;
 };
 //权限验证
-login.check = function (req,res) {
-    if(req.query.username && req.query.token){
+login.check = function (req, res) {
+    if (req.query.username && req.query.token) {
         //判断应有参数
         redisLink.check().get(req.query.username, function (ee, rr) {
             if (ee) {
@@ -89,7 +89,7 @@ login.check = function (req,res) {
                 }
             }
         });
-    }else {
+    } else {
         console.log('参数错误');
         res.end(fyscu.out(code.paramError));
     }

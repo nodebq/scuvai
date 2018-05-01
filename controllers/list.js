@@ -4,59 +4,62 @@ var conn = require('../libs/mysql.js');
 var check = require('../libs/check');
 
 var list = {
-    name:'列表模块'
+    name: '鍒楄〃妯″潡'
 };
 
 list.videoList = function (req, res) {
-    //视频列表
-    if(req.query.videoId){
+    //瑙嗛鍒楄〃
+    if (req.query.videoId) {
         req.query.videoId = parseInt(req.query.videoId);
         conn.check().query({
-            sql:'select id,video,user_id from video limit ?,10',
-            values:[req.query.videoId]
+            sql: 'select id,video,user_id,real_name,title from video limit ?,10',
+            values: [req.query.videoId]
         }, function (e, r) {
-            if(e){
+            if (e) {
                 console.log(e);
                 res.end(fyscu.out(code.mysqlError));
-            }else{
+            } else {
                 //var data=[];
-                res.end(fyscu.format(200,'success',r))
+                res.end(fyscu.format(200, 'success', r))
             }
         })
-    }else{
-        console.log('参数错误');
+    } else {
+        console.log('鍙傛暟閿欒');
         res.end(fyscu.out(code.paramError));
     }
     return 0;
 };
 list.myVideoList = function (req, res) {
-    //视频列表
-    if(req.query.videoId&&req.query.id&&req.query.token){
+    //鎴戠殑瑙嗛鍒楄〃
+    if (req.query.videoId && req.query.userId && req.query.token) {
+        req.query.videoId = parseInt(req.query.videoId);
+        req.query.userId = parseInt(req.query.userId);
         //req.query.videoId = parseInt(req.query.videoId);
-        check.do(req.query.userId,req.query.token, function (access) {
-            if(access){
+        check.do(req.query.userId, req.query.token, function (access) {
+            if (access) {
                 conn.check().query({
-                    sql:'select id,video,user_id from video limit ?,10 where user_id=?',
-                    values:[req.query.videoId,req.query.userId]
+                    sql: 'select id,video,user_id,real_name,title from video where user_id=? limit ?,10',
+                    values: [req.query.userId, req.query.videoId]
                 }, function (e, r) {
-                    if(e){
+                    if (e) {
                         console.log(e);
                         res.end(fyscu.out(code.mysqlError));
-                    }else{
+                    } else {
                         //var data=[];
-                        res.end(fyscu.format(200,'success',r))
+                        res.end(fyscu.format(200, 'success', r))
                     }
                 })
-            }else{
-                console.log('验证未通过');
+            } else {
+                console.log('楠岃瘉鏈�氳繃');
                 res.end(fyscu.out(code.checkLoginFailed));
             }
         });
-    }else{
-        console.log('参数错误');
+    } else {
+        console.log('鍙傛暟閿欒');
         res.end(fyscu.out(code.paramError));
     }
     return 0;
 };
+
 
 module.exports = list;

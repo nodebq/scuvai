@@ -9,7 +9,7 @@ var list = require('../controllers/list');
 /* GET home page. */
 router.use(function (req, res, next) {
     //提前处理
-     console.log("进入路由");
+    console.log("进入路由");
     //res.setHeader('content-type', 'charset=UTF-8');
     res.header("Access-Control-Allow-Origin", "*");
     next();
@@ -53,12 +53,12 @@ router.get('/setInfo', function (req, res) {
     profile.set(req, res);
 });
 router.get('/videoList', function (req, res) {
-    //个人信息修改
+    //视频列表
     res.setHeader('content-type', 'application/json; charset=UTF-8');
     list.videoList(req, res);
 });
 router.get('/myVideoList', function (req, res) {
-    //个人信息修改
+    //我的视频列表
     res.setHeader('content-type', 'application/json; charset=UTF-8');
     list.myVideoList(req, res);
 });
@@ -71,7 +71,7 @@ router.post('/upload', function (req, res, next) {
     // res.end('666');
     // return 0;
     // console.log(req);
-    upload.up(req,res);
+    upload.up(req, res);
 });
 router.post('/video', function (req, res, next) {
     //上传视频
@@ -82,7 +82,7 @@ router.post('/video', function (req, res, next) {
     // res.end('666');
     // return 0;
     // console.log(req);
-    upload.video(req,res);
+    upload.video(req, res);
 });
 
 module.exports = router;

@@ -2,28 +2,31 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>四川大学视频共享平台</title>
+    <link rel="stylesheet" href="../public/stylesheets/index.css"/>
 </head>
 <body>
-
-
-
-<div class="form-group">
-    <label for="inputFile">File input</label>
-    <input name='inputFile' type='file' id="inputFile" required/>
-    <p class="help-block">请确认上传的文件是否是png图片.</p>
+<!--页面开始-->
+<div id="fd-cantion">
+    <!--头部-->
+    <header>
+        <div id="title">
+            <span>四川大学视频共享平台</span>
+            <p class="btn">登录/注册</p>
+            <p class="choice btn" id="my_video">我的</p>
+            <p class="choice btn active" id="every_video">全部</p>
+        </div>
+    </header>
+    <!--正文-->
+    <section></section>
+    <!--页脚-->
+    <footer>
+        <div id="loading">loading......</div>
+        <div id="footer"></div>
+    </footer>
 </div>
-<button type="button" class="btn btn-default" id="upload">上传</button>
-
-<div class="form-group">
-    <label for="upload-video">File input</label>
-    <input name="upload-video" type='file' id="upload-video" required/>
-    <p class="help-block">请确认上传的文件是否是视频.</p>
-</div>
-<button type="button" class="btn btn-default" id="upload-v">上传</button>
-
-
-
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!--页面结束-->
+<script src="../public/javascripts/jquery.3.3.1.js"></script>
 <script src="../public/javascripts/index.js"></script>
 </body>
 </html>
