@@ -118,6 +118,22 @@ $(function () {
         }
     });
 
+    //登录操作
+    $("#login-btn").on("click",function () {
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:2245/login?username="+$("#username").val()+"&&password="+$("#password").val(),
+            async: true,
+            success: function (data) {
+                console.log(data);
+                window.localStorage.setItem("userId",data.data[0]);
+                window.localStorage.setItem("token",data.data[1]);
+                window.localStorage.setItem("username",$("#username").val());
+
+            }
+        });
+    });
+
     //头像上传
     $("#upload").on("click", function () {//
         var url = 'http://localhost:2245/upload';

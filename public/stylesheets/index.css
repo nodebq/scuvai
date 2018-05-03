@@ -63,6 +63,7 @@ a{
 }
 .login{
     min-width:560px;
+    display: none;
 }
 input{
     height: 200px;
