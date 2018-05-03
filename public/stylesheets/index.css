@@ -14,7 +14,7 @@ a{
     margin:3px auto;
     font-family: 'Orbitron', sans-serif;
 }
-.btn{
+.choice{
     font-size:10px;
     float:right;
     margin:10px;
@@ -29,7 +29,7 @@ a{
     margin:3px auto;
     font-family: 'Orbitron', sans-serif;
     text-align: center;
-    display: none;
+    /*display: none;*/
 }
 .active::before{
     content: "";
@@ -58,6 +58,36 @@ a{
     cursor:pointer;
 }
 .author{
-    width: 100%;
+    min-width:560px;
     float: left;
+}
+.login{
+    min-width:560px;
+}
+input{
+    height: 200px;
+    line-height: 200px;
+    color: #D2C9E8;
+    text-align: center;
+    background-color: #585858;
+    min-width:560px;
+    /*font-weight: bold;*/
+    border: 0;
+    margin: 3px auto;
+    display: block;
+    font-size: 100px;
+    width: 100%;
+}
+
+input::-webkit-input-placeholder { /* WebKit browsers */
+    color: #D2C9E8;
+}
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #D2C9E8;
+}
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #D2C9E8;
+}
+input:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: #D2C9E8;
 }
