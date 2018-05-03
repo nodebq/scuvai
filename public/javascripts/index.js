@@ -1,7 +1,8 @@
 $(function () {
     //测试预设项
     var userId = 1;
-    var token = '6ca5a6b04b5c11e8ab5e6dded1f3e7b7';
+    var token = 'f2511b004e7211e8a5a105ea976ed599';
+    var videoId = 999;
     //初始视频列表
     $.ajax({
         type:"GET",
@@ -10,8 +11,14 @@ $(function () {
         success: function (data) {
             //console.log(data);
             data.data.forEach(function (ele) {
+                console.log(ele);
+                if(ele.id<videoId){
+                    videoId = ele.id;
+                }
+                console.log(videoId);
                 var $videoItem=$('<div class="video_item"></div>');
-                var $img = $('<img class="video_img" src="../'+ele.video+'" alt="err"/>');
+                var $img = $('<video src="../'+ele.video+'" width="320" height="240" preload="auto">您的浏览器不支持 video 标签。</video>');
+                // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
                 var $author = $('<p class="author">作者:'+ele.real_name+'</p>');
                 var $title = $('<p class="title">'+ele.title+'</p>');
                 $videoItem.append($title).append($img).append($author);
@@ -21,12 +28,55 @@ $(function () {
                 var $noMore = $('<p class="loading">没有更多了...</p>');
                 $("section").append($noMore);
                 $('#loading').hide();
-            }else{
-                //滚动监听
-
             }
         }
     });
+    //滚动监听
+    $(window).scroll(function(){
+
+        var scrollTop = $(this).scrollTop();    //滚动条距离顶部的高度
+        var scrollHeight = $(document).height();   //当前页面的总高度
+        var clientHeight = $(window).height();    //当前可视的页面高度
+        console.log("top:"+scrollTop+",doc:"+scrollHeight+",client:"+clientHeight);
+        if(scrollTop + clientHeight >= scrollHeight){   //距离顶部+当前高度 >=文档总高度 即代表滑动到底部
+            //滚动条到达底部
+            console.log('底部');
+            $.ajax({
+                type:"GET",
+                url:"http://127.0.0.1:2245/videoList?videoId="+videoId,
+                async:true,
+                success: function (data) {
+                    //console.log(data);
+                    data.data.forEach(function (ele) {
+                        // console.log(ele);
+                        if(ele.id>videoId){
+                            videoId = ele.id;
+                        }
+                        console.log(videoId);
+                        var $videoItem=$('<div class="video_item"></div>');
+                        var $img = $('<video src="../'+ele.video+'" width="320" height="240" preload="auto">您的浏览器不支持 video 标签。</video>');
+                        // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
+                        var $author = $('<p class="author">作者:'+ele.real_name+'</p>');
+                        var $title = $('<p class="title">'+ele.title+'</p>');
+                        $videoItem.append($title).append($img).append($author);
+                        $("section").append($videoItem);
+                    });
+                    if(data.data.length<10){
+                        var $noMore = $('<p class="loading">没有更多了...</p>');
+                        $("section").append($noMore);
+                        $('#loading').hide();
+                    }else{
+
+                    }
+                }
+            });
+        }else if(scrollTop<=0){
+            //滚动条到达顶部
+            // alert(4)
+            //滚动条距离顶部的高度小于等于0 TODO
+        }
+    });
+
     //活动标签页切换
     $(".choice").click(function () {
         $(".choice").removeClass("active");

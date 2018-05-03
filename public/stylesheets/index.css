@@ -29,6 +29,7 @@ a{
     margin:3px auto;
     font-family: 'Orbitron', sans-serif;
     text-align: center;
+    display: none;
 }
 .active::before{
     content: "";
@@ -45,7 +46,7 @@ a{
     padding:0 20px;
 }
 .video_item{
-    height:300px;
+    height:320px;
     min-width:560px;
     background: #83867e;
     margin:3px auto;

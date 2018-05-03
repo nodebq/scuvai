@@ -12,7 +12,7 @@ list.videoList = function (req, res) {
     if (req.query.videoId) {
         req.query.videoId = parseInt(req.query.videoId);
         conn.check().query({
-            sql: 'select id,video,user_id,real_name,title from video limit ?,10',
+            sql: 'select id,video,user_id,real_name,title from video order by id desc limit ?,10',
             values: [req.query.videoId]
         }, function (e, r) {
             if (e) {
@@ -38,7 +38,7 @@ list.myVideoList = function (req, res) {
         check.do(req.query.userId, req.query.token, function (access) {
             if (access) {
                 conn.check().query({
-                    sql: 'select id,video,user_id,real_name,title from video where user_id=? limit ?,10',
+                    sql: 'select id,video,user_id,real_name,title from video where user_id=? order by id desc limit ?,10',
                     values: [req.query.userId, req.query.videoId]
                 }, function (e, r) {
                     if (e) {

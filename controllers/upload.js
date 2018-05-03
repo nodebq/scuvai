@@ -126,7 +126,7 @@ upload.video = function (req, res) {
                             } else {
                                 console.log('rename ok');
                                 conn.check().query({
-                                    sql: 'insert into video (user_id,video,real_name,title,image) values (?,?,?,?)',
+                                    sql: 'insert into video (user_id,video,real_name,title) values (?,?,?,?)',
                                     values: [fields.userId[0], dstPath, fields.realName[0], fields.title[0]]
                                 }, function (e, r) {
                                     if (e) {
