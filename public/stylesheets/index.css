@@ -65,6 +65,10 @@ a{
     min-width:560px;
     display: none;
 }
+.profile{
+    min-width:560px;
+    display: none;
+}
 input{
     height: 200px;
     line-height: 200px;
@@ -91,4 +95,7 @@ input::-moz-placeholder { /* Mozilla Firefox 19+ */
 }
 input:-ms-input-placeholder { /* Internet Explorer 10+ */
     color: #D2C9E8;
+}
+#profile {
+    display: none;
 }

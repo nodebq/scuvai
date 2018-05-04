@@ -10,37 +10,26 @@ var login = {
 //登录逻辑
 login.do = function (req, res) {
     //登录,redis保存token
-    // console.log(req.query);
-    // console.log('select username from user where username=1 and password=1');
-    if (req.query.username && req.query.password) {//判断应有参数
-        conn.check().query({//查询用户名是否存在
-            sql: 'select id,password from user where username=?',
+    if (req.query.username && req.query.password) {
+        //判断应有参数
+        conn.check().query({
+            //查询用户名是否存在
+            sql: 'select id,password,real_name from user where username=?',
             values: [req.query.username]
         }, function (e, r) {
             if (e) {
                 console.log(e);
                 res.end(fyscu.out(code.mysqlError));
             } else {
-                //console.log('200');
-                // console.log(r);
-                if (r.length) {//用户名存在
+                if (r.length) {
+                    //用户名存在
                     // res.end(fyscu.out(code.success));
-                    if (r[0].password === req.query.password) {//判断密码是否一致
-                        // console.log(0);
-                        // redisLink.check().on('connect', function (err) {//连接redis
-                        //     if (err) {
-                        //         console.log(err);
-                        //         res.end(fyscu.out(code.redisError));
-                        //     } else {//生成随机token
-                        //         // console.log(1);
-                        //
-                        //         // console.log(1);
-                        //     }
-                        // });
-                        // console.log(6);
+                    if (r[0].password === req.query.password) {
+                        //判断密码是否一致
                         var token = uuid.v1().replace(/-/g, "");
                         console.log(2);
                         redisLink.check().set(r[0].id, token, function (ee, rr) {
+                            //写入redis
                             if (ee) {
                                 console.log(ee);
                                 res.end(fyscu.out(code.redisError));
@@ -48,7 +37,7 @@ login.do = function (req, res) {
                                 console.log(rr);
                                 console.log(typeof (rr));
                                 if (rr === 'OK') {
-                                    res.end(fyscu.format(200, 'success', [r[0].id, token]));
+                                    res.end(fyscu.format(200, 'success', [r[0].id, token,r[0].real_name]));
                                 } else {
                                     res.end(fyscu.out(code.redisWriteFailed));
                                 }

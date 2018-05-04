@@ -13,9 +13,10 @@
     <header>
         <div id="title">
             <span>四川大学视频共享平台</span>
+            <p class="choice" id="profile"></p>
             <p class="choice" id="login">登录/注册</p>
-            <p class="choice" id="my_video">我的</p>
-            <p class="choice active" id="every_video">全部</p>
+            <p class="choice" id="my_video">我的视频</p>
+            <p class="choice active" id="every_video">全部视频</p>
         </div>
     </header>
     <!--正文-->
@@ -23,7 +24,10 @@
         <div class="login">
             <input type="text" placeholder="请输入用户名" id="username">
             <input type="password" placeholder="请输入密码" id="password">
-            <input type="button" placeholder="请输入密码" value="登录" id="login-btn">
+            <input type="button" value="登录" id="login-btn">
+        </div>
+        <div class="profile">
+            <input type="button" value="注销" id="logout-btn">
         </div>
     </section>
     <!--页脚-->

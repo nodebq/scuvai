@@ -6,6 +6,12 @@ $(function () {
     var every_videoId = 0;
     var my_videoId = 0;
     var type = 'every_video';
+
+    //判断登录状态
+    if(window.localStorage.getItem("token")){
+        $("#login").hide().prev().show().text(window.localStorage.getItem("nickname"));
+    }else {}
+
     //初始视频列表
     $.ajax({
         type: "GET",
@@ -27,7 +33,6 @@ $(function () {
                 $('#loading').hide();
                 $('#no_more').show();
             }
-            $("#login").click();//加载完就点击登录按钮
         }
     });
 
@@ -98,22 +103,60 @@ $(function () {
                 $(".every_video").show();
                 $(".login").hide();
                 $('#loading').show();
+                $(".profile").hide();
                 type = "every_video";
                 break;
             case "my_video":
-                $(".my_video").show();
-                $(".every_video").hide();
-                $(".login").hide();
-                $('#loading').show();
-                type = "my_video";
+                if(window.localStorage.getItem("token")){
+                    $(".my_video").show();
+                    $(".every_video").hide();
+                    $(".login").hide();
+                    $('#loading').show();
+                    $(".profile").hide();
+                    type = "my_video";
+                    $.ajax({
+                        type: "GET",
+                        url: "http://127.0.0.1:2245/myVideoList?videoId=0&&userId="+window.localStorage.getItem("userId")+"&&token="+window.localStorage.getItem("token"),
+                        async: true,
+                        success: function (data) {
+                            //console.log(data);
+                            data.data.forEach(function (ele) {
+                                every_videoId++;
+                                var $videoItem = $('<div class="video_item every_video"></div>');
+                                var $img = $('<video src="../' + ele.video + '" width="320" height="240" preload="auto">您的浏览器不支持 video 标签。</video>');
+                                // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
+                                var $author = $('<p class="author">作者:' + ele.real_name + '</p>');
+                                var $title = $('<p class="title">' + ele.title + '</p>');
+                                $videoItem.append($title).append($img).append($author);
+                                $("section").append($videoItem);
+                            });
+                            if (data.data.length < 10) {
+                                $('#loading').hide();
+                                $('#no_more').show();
+                            }
+                        }
+                    });
+                }else{
+                    $("#login").click();
+                }
+
                 break;
             case "login":
                 $(".my_video").hide();
                 $(".every_video").hide();
                 $(".login").show();
-                $('#loading').hide();
-                $('#no_more').hide();
+                $("#loading").hide();
+                $("#no_more").hide();
                 type = "login";
+                $(".profile").hide();
+                break;
+            case "profile":
+                $(".my_video").hide();
+                $(".every_video").hide();
+                $(".login").hide();
+                $("#loading").hide();
+                $("#no_more").hide();
+                $(".profile").show();
                 break;
         }
     });
@@ -124,12 +167,29 @@ $(function () {
             type: "GET",
             url: "http://127.0.0.1:2245/login?username="+$("#username").val()+"&&password="+$("#password").val(),
             async: true,
+            beforeSend: function () {
+                console.log("正在登录,请稍候");
+                $("#login-btn").val("正在登录,请稍等");
+                $("#login-btn").attr('disabled', 'true');
+            },
             success: function (data) {
                 console.log(data);
-                window.localStorage.setItem("userId",data.data[0]);
-                window.localStorage.setItem("token",data.data[1]);
-                window.localStorage.setItem("username",$("#username").val());
+                if(data.code == '200'){
+                    console.log("登录成功");
+                    window.localStorage.setItem("userId",data.data[0]);
+                    window.localStorage.setItem("token",data.data[1]);
+                    window.localStorage.setItem("username",$("#username").val());
+                    window.localStorage.setItem("nickname",data.data[2]);
+                    $("#login").hide().prev().show().text(data.data[2]);
 
+                    setTimeout(function () {
+                        $("#login-btn").val("登录成功");
+                        setTimeout(function () {
+                            $("#every_video").click();//切换标签页
+                        },500);
+                    },500);
+
+                }
             }
         });
     });
@@ -218,4 +278,15 @@ $(function () {
     });
     //end
 
+    $("#logout-btn").on("click",function () {
+        window.localStorage.clear();
+        $(this).val("正在注销");
+        setTimeout(function () {
+            setTimeout(function () {
+                $(this).val("注销成功");
+            },500);
+            window.location.reload();
+        },500);
+
+    })
 });
