@@ -2,6 +2,10 @@ body{
     font-family:"Microsoft YaHei";
     background-color:#c8c8c8;
     margin: 0;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
 header{
     height: 83px;
@@ -129,6 +133,9 @@ input{
 .video_item video{
     width: 100%;
 }
-#zkpl{
+.zkpl{
     cursor:pointer;
+}
+.comment_item{
+    display: none;
 }

@@ -51,6 +51,10 @@ var code = {
     'videoImageError':{
         code: 2007,
         message:"生成缩略图出错"
+    },
+    'unauthorizedOperation':{
+        code:2008,
+        message:"用户试图进行越权操作,已加入黑名单"
     }
 };
 module.exports = code;

@@ -7,10 +7,47 @@ $(function () {
     var my_videoId = 0;
     var type = 'every_video';
 
+    //展开评论
+    $("section").on("click", ".zkpl", function () {
+        var mt = $(this).parent();
+        //console.log($(this).find(".comment_item").length);
+        if (mt.find(".comment_item").length) {
+            //
+        } else {
+            if (window.localStorage.getItem("token")) {
+                //展开
+                $.ajax({
+                    type: "GET",
+                    url: "http://127.0.0.1:2245/comment?videoId=" + $(this).parent().attr("id") + "&&userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token"),
+                    async: true,
+                    success: function (data) {
+                        console.log(data);
+                        data.data.forEach(function (ele) {
+                            var $commentItem = $('<p class="comment_item" id=' + ele.id + '><span>' + ele.comment + '</span></p>');
+                            mt.append($commentItem);
+                        });
+                        var $commentNoMore = $('<p class="comment_item"><span>没有更多了</span></p>');
+                        mt.append($commentNoMore);
+                        //console.log($(this));
+                        $(".comment_item").show();
+                        mt.find(".zkpl").text("收起评论");
+                    }
+                });
+            } else {
+                $("#login").click();
+            }
+        }
+
+        $(".comment_item").slideToggle(function () {
+            mt.find(".zkpl").text()=="收起评论"?mt.find(".zkpl").text("展开评论"):mt.find(".zkpl").text("收起评论");
+        });
+    });
+
     //判断登录状态
-    if(window.localStorage.getItem("token")){
+    if (window.localStorage.getItem("token")) {
         $("#login").hide().prev().show().text(window.localStorage.getItem("nickname"));
-    }else {}
+    } else {
+    }
 
     //初始视频列表
     $.ajax({
@@ -21,12 +58,12 @@ $(function () {
             console.log(data);
             data.data.forEach(function (ele) {
                 every_videoId++;
-                var $videoItem = $('<div class="video_item every_video" id='+ele.id+'></div>');
+                var $videoItem = $('<div class="video_item every_video" id=' + ele.id + '></div>');
                 var $img = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');
                 // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
                 var $author = $('<p class="author">作者:' + ele.real_name + '</p>');
                 var $title = $('<p class="title">' + ele.title + '</p>');
-                var $comment = $('<p id="zkpl"><span class="author">展开评论</span><img src="../public/images/xxx.png" alt="error"></p>');
+                var $comment = $('<p class="zkpl"><span class="author">展开评论</span><img src="../public/images/xxx.png" alt="error"></p>');
                 $videoItem.append($title).append($author).append($img).append($comment);
                 $("section").append($videoItem);
             });
@@ -53,7 +90,7 @@ $(function () {
                 if (type == "every_video") {
                     var url = "http://127.0.0.1:2245/videoList?videoId=" + every_videoId;
                 } else if (type == "my_video") {
-                    var url = "http://127.0.0.1:2245/myVideoList?videoId="+my_videoId+"&&userId="+window.localStorage.getItem("userId")+"&&token="+window.localStorage.getItem("token");
+                    var url = "http://127.0.0.1:2245/myVideoList?videoId=" + my_videoId + "&&userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token");
                 }
                 console.log('底部');
                 $.ajax({
@@ -63,12 +100,12 @@ $(function () {
                     success: function (data) {
                         data.data.forEach(function (ele) {
                             // console.log(ele);
-                            if(type == "every_video"){
+                            if (type == "every_video") {
                                 every_videoId++;
-                            }else if(type == "my_video"){
+                            } else if (type == "my_video") {
                                 my_videoId++;
                             }
-                            var $videoItem = $('<div class="video_item '+type+'"></div>');
+                            var $videoItem = $('<div class="video_item ' + type + '"></div>');
                             var $img = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');
                             // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
                             var $author = $('<p class="author">作者:' + ele.real_name + '</p>');
@@ -109,7 +146,7 @@ $(function () {
                 type = "every_video";
                 break;
             case "my_video":
-                if(window.localStorage.getItem("token")){
+                if (window.localStorage.getItem("token")) {
                     $(".my_video").show();
                     $(".every_video").hide();
                     $(".login").hide();
@@ -118,7 +155,7 @@ $(function () {
                     type = "my_video";
                     $.ajax({
                         type: "GET",
-                        url: "http://127.0.0.1:2245/myVideoList?videoId=0&&userId="+window.localStorage.getItem("userId")+"&&token="+window.localStorage.getItem("token"),
+                        url: "http://127.0.0.1:2245/myVideoList?videoId=0&&userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token"),
                         async: true,
                         success: function (data) {
                             //console.log(data);
@@ -137,7 +174,7 @@ $(function () {
                             }
                         }
                     });
-                }else{
+                } else {
                     $("#login").click();
                 }
 
@@ -163,10 +200,10 @@ $(function () {
     });
 
     //登录操作
-    $("#login-btn").on("click",function () {
+    $("#login-btn").on("click", function () {
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:2245/login?username="+$("#username").val()+"&&password="+$("#password").val(),
+            url: "http://127.0.0.1:2245/login?username=" + $("#username").val() + "&&password=" + $("#password").val(),
             async: true,
             beforeSend: function () {
                 console.log("正在登录,请稍候");
@@ -175,20 +212,20 @@ $(function () {
             },
             success: function (data) {
                 console.log(data);
-                if(data.code == '200'){
+                if (data.code == '200') {
                     console.log("登录成功");
-                    window.localStorage.setItem("userId",data.data[0]);
-                    window.localStorage.setItem("token",data.data[1]);
-                    window.localStorage.setItem("username",$("#username").val());
-                    window.localStorage.setItem("nickname",data.data[2]);
+                    window.localStorage.setItem("userId", data.data[0]);
+                    window.localStorage.setItem("token", data.data[1]);
+                    window.localStorage.setItem("username", $("#username").val());
+                    window.localStorage.setItem("nickname", data.data[2]);
                     $("#login").hide().prev().show().text(data.data[2]);
 
                     setTimeout(function () {
                         $("#login-btn").val("登录成功");
                         setTimeout(function () {
                             $("#every_video").click();//切换标签页
-                        },500);
-                    },500);
+                        }, 500);
+                    }, 500);
 
                 }
             }
@@ -279,20 +316,17 @@ $(function () {
     });
 
     //注销操作
-    $("#logout-btn").on("click",function () {
+    $("#logout-btn").on("click", function () {
         window.localStorage.clear();
         $(this).val("正在注销");
         setTimeout(function () {
             setTimeout(function () {
                 $(this).val("注销成功");
-            },500);
+            }, 500);
             window.location.reload();
-        },500);
+        }, 500);
 
-    })
+    });
 
-    //展开评论
-    $("#zkpl").on("click",function () {
 
-    })
 });
