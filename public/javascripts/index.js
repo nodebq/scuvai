@@ -33,6 +33,7 @@ $(function () {
                 $('#loading').hide();
                 $('#no_more').show();
             }
+            $("#login").click();
         }
     });
 
@@ -51,7 +52,7 @@ $(function () {
                 if (type == "every_video") {
                     var url = "http://127.0.0.1:2245/videoList?videoId=" + every_videoId;
                 } else if (type == "my_video") {
-                    var url = "http://127.0.0.1:2245//myVideoList?videoId=" + my_videoId;
+                    var url = "http://127.0.0.1:2245/myVideoList?videoId=0&&userId="+window.localStorage.getItem("userId")+"&&token="+window.localStorage.getItem("token");
                 }
                 console.log('底部');
                 $.ajax({
@@ -276,8 +277,8 @@ $(function () {
             }
         });
     });
-    //end
 
+    //注销操作
     $("#logout-btn").on("click",function () {
         window.localStorage.clear();
         $(this).val("正在注销");
@@ -289,4 +290,5 @@ $(function () {
         },500);
 
     })
+
 });

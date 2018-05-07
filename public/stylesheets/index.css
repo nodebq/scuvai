@@ -1,6 +1,7 @@
 body{
     font-family:"Microsoft YaHei";
     background-color:#c8c8c8;
+    margin: 0;
 }
 a{
     text-decoration:none;
@@ -38,13 +39,7 @@ a{
     top:-10px;
     border:1px solid;
 }
-#footer{
-    background-color:#585858;
-    min-width:560px;
-    height:10px;
-    margin:3px auto;
-    padding:0 20px;
-}
+
 .video_item{
     height:320px;
     min-width:560px;
@@ -61,27 +56,9 @@ a{
     min-width:560px;
     float: left;
 }
-.login{
-    min-width:560px;
-    display: none;
-}
 .profile{
     min-width:560px;
     display: none;
-}
-input{
-    height: 200px;
-    line-height: 200px;
-    color: #D2C9E8;
-    text-align: center;
-    background-color: #585858;
-    min-width:560px;
-    /*font-weight: bold;*/
-    border: 0;
-    margin: 3px auto;
-    display: block;
-    font-size: 100px;
-    width: 100%;
 }
 
 input::-webkit-input-placeholder { /* WebKit browsers */
@@ -98,4 +75,42 @@ input:-ms-input-placeholder { /* Internet Explorer 10+ */
 }
 #profile {
     display: none;
+}
+
+.login{
+    min-width:560px;
+    display: none;
+}
+input{
+    color: #D2C9E8;
+    text-align: center;
+    background-color: #585858;
+    min-width:560px;
+    /*font-weight: bold;*/
+    border: 0;
+    margin: 3px auto;
+    display: block;
+    height: 60px;
+}
+.fd-cantion{
+    margin: 0 5px;
+}
+#footer{
+    background-color:#585858;
+    min-width:560px;
+    height:10px;
+    padding:0 20px;
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 50px);
+}
+.login>input{
+    margin:15vh auto;
+
+    border-radius: 5px;
+    font-size: 20px;
+}
+#login-btn,#logout-btn{
+    border-radius: 50px;
+    cursor: pointer;
 }
