@@ -3,8 +3,9 @@ var router = express.Router();
 var login = require('../controllers/login');
 var register = require('../controllers/register');
 var profile = require('../controllers/profile');
-var upload = require('../controllers/upload.js');
+var upload = require('../controllers/upload');
 var list = require('../controllers/list');
+var comment = require('../controllers/comment');
 
 /* GET home page. */
 router.use(function (req, res, next) {
@@ -14,14 +15,12 @@ router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     next();
 });
-
 //router.get('/', function (req, res, next) {
 //    //根目录
 //    res.setHeader('Content-Type', 'text/html');
 //    res.render('index', {title: 'Express'});
 //    next();
 //});
-
 router.get('/login', function (req, res) {
     // 登录接口
     res.setHeader('content-type', 'application/json; charset=UTF-8');
@@ -83,6 +82,11 @@ router.post('/video', function (req, res, next) {
     // return 0;
     // console.log(req);
     upload.video(req, res);
+});
+router.get('/comment', function (req, res) {
+    //视频列表
+    res.setHeader('content-type', 'application/json; charset=UTF-8');
+    comment.list(req, res);
 });
 
 module.exports = router;

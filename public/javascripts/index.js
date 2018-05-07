@@ -18,22 +18,23 @@ $(function () {
         url: "http://127.0.0.1:2245/videoList?videoId=0",
         async: true,
         success: function (data) {
-            //console.log(data);
+            console.log(data);
             data.data.forEach(function (ele) {
                 every_videoId++;
-                var $videoItem = $('<div class="video_item every_video"></div>');
-                var $img = $('<video src="../' + ele.video + '" width="320" height="240" preload="auto">您的浏览器不支持 video 标签。</video>');
+                var $videoItem = $('<div class="video_item every_video" id='+ele.id+'></div>');
+                var $img = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');
                 // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
                 var $author = $('<p class="author">作者:' + ele.real_name + '</p>');
                 var $title = $('<p class="title">' + ele.title + '</p>');
-                $videoItem.append($title).append($img).append($author);
+                var $comment = $('<p id="zkpl"><span class="author">展开评论</span><img src="../public/images/xxx.png" alt="error"></p>');
+                $videoItem.append($title).append($author).append($img).append($comment);
                 $("section").append($videoItem);
             });
             if (data.data.length < 10) {
                 $('#loading').hide();
                 $('#no_more').show();
             }
-            $("#login").click();
+            // $("#login").click();
         }
     });
 
@@ -52,7 +53,7 @@ $(function () {
                 if (type == "every_video") {
                     var url = "http://127.0.0.1:2245/videoList?videoId=" + every_videoId;
                 } else if (type == "my_video") {
-                    var url = "http://127.0.0.1:2245/myVideoList?videoId=0&&userId="+window.localStorage.getItem("userId")+"&&token="+window.localStorage.getItem("token");
+                    var url = "http://127.0.0.1:2245/myVideoList?videoId="+my_videoId+"&&userId="+window.localStorage.getItem("userId")+"&&token="+window.localStorage.getItem("token");
                 }
                 console.log('底部');
                 $.ajax({
@@ -68,7 +69,7 @@ $(function () {
                                 my_videoId++;
                             }
                             var $videoItem = $('<div class="video_item '+type+'"></div>');
-                            var $img = $('<video src="../' + ele.video + '" width="320" height="240" preload="auto">您的浏览器不支持 video 标签。</video>');
+                            var $img = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');
                             // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
                             var $author = $('<p class="author">作者:' + ele.real_name + '</p>');
                             var $title = $('<p class="title">' + ele.title + '</p>');
@@ -124,8 +125,7 @@ $(function () {
                             data.data.forEach(function (ele) {
                                 every_videoId++;
                                 var $videoItem = $('<div class="video_item every_video"></div>');
-                                var $img = $('<video src="../' + ele.video + '" width="320" height="240" preload="auto">您的浏览器不支持 video 标签。</video>');
-                                // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
+                                var $img = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');                                // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
                                 var $author = $('<p class="author">作者:' + ele.real_name + '</p>');
                                 var $title = $('<p class="title">' + ele.title + '</p>');
                                 $videoItem.append($title).append($img).append($author);
@@ -291,4 +291,8 @@ $(function () {
 
     })
 
+    //展开评论
+    $("#zkpl").on("click",function () {
+
+    })
 });
