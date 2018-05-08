@@ -37,14 +37,14 @@ comment.list = function (req, res) {
 
 comment.new = function (req, res) {
     // 评论新增
-    if (req.query.userId && req.query.token && req.query.comment && req.query.videoId) {
+    if (req.query.userId && req.query.token && req.query.comment && req.query.videoId && req.query.realName) {
         check.do(req.query.userId, req.query.token, function (access) {
             if (access) {
                 console.log(access);
                 //验证通过
                 conn.check().query({
-                    sql: 'insert into comment (comment,user_id,video_id) values (?,?,?)',
-                    values: [req.query.comment, req.query.userId, req.query.videoId]
+                    sql: 'insert into comment (comment,user_id,video_id,real_name) values (?,?,?,?)',
+                    values: [req.query.comment, req.query.userId, req.query.videoId,req.query.realName]
                 }, function (e, r) {
                     if (e) {
                         console.log(e);
@@ -72,8 +72,8 @@ comment.del = function (req, res) {
                 console.log(access);
                 //验证通过
                 conn.check().query({
-                    sql: 'select user_id from comment where comment_id=?',
-                    values: [req.query.commetId]
+                    sql: 'select user_id from comment where id=?',
+                    values: [parseInt(req.query.commentId)]
                 }, function (e, r) {
                     if (e) {
                         console.log(e);
@@ -83,7 +83,7 @@ comment.del = function (req, res) {
                         if (r[0].user_id == req.query.userId) {
                             //删除操作
                             conn.check().query({
-                                sql: 'DELETE FROM comment WHERE comment_id = ?',
+                                sql: 'DELETE FROM comment WHERE id = ?',
                                 values: [req.query.commentId]
                             }, function (ee, rr) {
                                 if (ee) {
@@ -91,7 +91,7 @@ comment.del = function (req, res) {
                                     res.end(fyscu.out(code.mysqlError));
                                 } else {
                                     console.log('success');
-                                    res.end(fyscu.out(code.mysqlError));
+                                    res.end(fyscu.out(code.success));
                                 }
                             });
                         } else {

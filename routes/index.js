@@ -15,12 +15,6 @@ router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     next();
 });
-//router.get('/', function (req, res, next) {
-//    //根目录
-//    res.setHeader('Content-Type', 'text/html');
-//    res.render('index', {title: 'Express'});
-//    next();
-//});
 router.get('/login', function (req, res) {
     // 登录接口
     res.setHeader('content-type', 'application/json; charset=UTF-8');
@@ -63,15 +57,9 @@ router.get('/myVideoList', function (req, res) {
 });
 router.post('/upload', function (req, res, next) {
     //上传头像
-    // req.query.userId = 1;
-    // console.log(req.body);
-    // console.log(req.query);
-    // req.query.type = 1;
-    // res.end('666');
-    // return 0;
-    // console.log(req);
     upload.up(req, res);
 });
+
 router.post('/video', function (req, res, next) {
     //上传视频
     // req.query.userId = 1;
@@ -83,10 +71,23 @@ router.post('/video', function (req, res, next) {
     // console.log(req);
     upload.video(req, res);
 });
+
 router.get('/comment', function (req, res) {
-    //视频列表
+    //评论列表
     res.setHeader('content-type', 'application/json; charset=UTF-8');
     comment.list(req, res);
+});
+
+router.get('/commentNew', function (req, res) {
+    //评论新建
+    res.setHeader('content-type', 'application/json; charset=UTF-8');
+    comment.new(req, res);
+});
+
+router.get('/commentDel', function (req, res) {
+    //评论删除
+    res.setHeader('content-type', 'application/json; charset=UTF-8');
+    comment.del(req, res);
 });
 
 module.exports = router;

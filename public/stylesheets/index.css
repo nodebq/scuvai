@@ -91,7 +91,7 @@ input:-ms-input-placeholder { /* Internet Explorer 10+ */
     min-width:560px;
     display: none;
 }
-input{
+.login input,.profile input{
     color: #D2C9E8;
     text-align: center;
     background-color: #585858;
@@ -137,5 +137,31 @@ input{
     cursor:pointer;
 }
 .comment_item{
-    display: none;
+    /*display: none;*/
+}
+.video_item input{
+    color: #D2C9E8;
+    text-align: center;
+    background-color: #585858;
+    /*min-width:560px;*/
+    /*font-weight: bold;*/
+    line-height: 40px;
+    border: 0;
+    margin: 3px 3px;
+    height: 40px;
+    padding:0 5px;
+}
+#textInput{
+    width: 400px;
+}
+.no_more{
+    color:#c8c8c8;
+}
+.dyh{
+    transform:rotate(90deg);
+    -webkit-transform:rotate(90deg);
+}
+.comment_del{
+    color: red;
+    cursor:pointer;
 }

@@ -1,8 +1,8 @@
 $(function () {
     //测试预设项
     $('#no_more').hide();
-    var userId = 1;
-    var token = 'f2511b004e7211e8a5a105ea976ed599';
+
+
     var every_videoId = 0;
     var my_videoId = 0;
     var type = 'every_video';
@@ -21,16 +21,26 @@ $(function () {
                     url: "http://127.0.0.1:2245/comment?videoId=" + $(this).parent().attr("id") + "&&userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token"),
                     async: true,
                     success: function (data) {
-                        console.log(data);
+                        // console.log(data);
+                        var commentDiv = $('<div class = "comment_div"></div>');
                         data.data.forEach(function (ele) {
-                            var $commentItem = $('<p class="comment_item" id=' + ele.id + '><span>' + ele.comment + '</span></p>');
-                            mt.append($commentItem);
+                            // console.log(ele);
+                            if (ele.user_id == window.localStorage.getItem("userId")) {
+                                var $commentItem = $('<p class="comment_item" id=' + ele.id + '><span>你:' + ele.comment + '</span>   <span class="comment_del">删除</span></p>');
+                            } else {
+                                var $commentItem = $('<p class="comment_item" id=' + ele.id + '><span>' + ele.real_name + ':</span><span>' + ele.comment + '</span></p>');
+                            }
+                            commentDiv.append($commentItem);
                         });
-                        var $commentNoMore = $('<p class="comment_item"><span>没有更多了</span></p>');
-                        mt.append($commentNoMore);
+                        var $commentNoMore = $('<p class="comment_item"><span class="no_more">没有更多了...</span></p>');
+
+                        var $commentInput = $('<p class="comment_item"><input type="text" id="textInput"><input class="comment_post" type="button" value="发送评论"></p>');
+                        commentDiv.append($commentNoMore).append($commentInput);
+                        mt.append(commentDiv);
                         //console.log($(this));
+                        mt.find(".zkpl").html("<span\">收起评论</span><img src=\"../public/images/yyy.png\" alt=\"error\">");
                         $(".comment_item").show();
-                        mt.find(".zkpl").text("收起评论");
+
                     }
                 });
             } else {
@@ -38,9 +48,67 @@ $(function () {
             }
         }
 
-        $(".comment_item").slideToggle(function () {
-            mt.find(".zkpl").text()=="收起评论"?mt.find(".zkpl").text("展开评论"):mt.find(".zkpl").text("收起评论");
+        mt.find(".comment_div").slideToggle(function () {
+            // console.log(mt.find(".zkpl").text());
+            mt.find(".zkpl").text() === "收起评论" ? mt.find(".zkpl").html("<span\">展开评论</span><img src=\"../public/images/xxx.png\" alt=\"error\">") : mt.find(".zkpl").html("<span\">收起评论</span><img src=\"../public/images/yyy.png\" alt=\"error\">");
         });
+    });
+
+    //发布评论
+    $("section").on("click", ".comment_post", function () {
+        // console.log($(this).prev());
+        var $commentBtn = $(this);
+        if (!$commentBtn.prev().val()) {
+            // console.log(0);
+            $commentBtn.prev().css("border", "1px solid red")
+        } else {
+            // console.log($(this).parent().parent().parent().attr("id"));
+            $.ajax({
+                url: "http://127.0.0.1:2245/commentNew",
+                async: true,
+                type: "GET",
+                dataType: "json",
+                data: "videoId=" + $commentBtn.parent().parent().parent().attr("id") + "&&comment=" + $commentBtn.prev().val() + "&&userId=" + window.localStorage.getItem('userId') + "&&token=" + window.localStorage.getItem('token') + "&&realName=" + window.localStorage.getItem('nickname'),
+                success: function (data) {
+                    // alert( "Data Saved: " + data );
+                    console.log(data);
+                    console.log($commentBtn.parent().prev());
+                    var $myComment = '<p class="comment_item fdfdW"><span>你:' + $commentBtn.prev().val() + '</span></p>';
+                    $commentBtn.parent().prev().before($myComment);
+                    $commentBtn.text("评论成功").attr('disabled', 'false').prev().attr('readonly', 'readonly');
+                    setTimeout(function () {
+                        $commentBtn.parent().hide();
+                    }, 500)
+                }
+            });
+        }
+    });
+
+    //删除评论
+    $("section").on("click", ".comment_del", function () {
+        // console.log($(this).prev());
+        var $commentDelBtn = $(this);
+
+        // console.log($(this).parent().parent().parent().attr("id"));
+        $.ajax({
+            url: "http://127.0.0.1:2245/commentDel",
+            async: true,
+            type: "GET",
+            dataType: "json",
+            data: "userId=" + window.localStorage.getItem('userId') + "&&token=" + window.localStorage.getItem('token') + "&&commentId=" + $commentDelBtn.parent().attr("id"),
+            success: function (data) {
+                // alert( "Data Saved: " + data );
+                console.log(data);
+                // var $myComment = '<p class="comment_item fdfdW"><span>你:' + $commentBtn.prev().val() + '</span></p>';
+                // $commentBtn.parent().prev().before($myComment);
+                // $commentBtn.text("评论成功").attr('disabled', 'false').prev().attr('readonly', 'readonly');
+                $commentDelBtn.text("删除成功");
+                setTimeout(function () {
+                    $commentDelBtn.parent().hide();
+                }, 500)
+            }
+        });
+
     });
 
     //判断登录状态
@@ -52,21 +120,24 @@ $(function () {
     //初始视频列表
     $.ajax({
         type: "GET",
-        url: "http://127.0.0.1:2245/videoList?videoId=0",
+        url: "http://127.0.0.1:2245/videoList",
+        data: "videoId=0",
         async: true,
         success: function (data) {
-            console.log(data);
+            // console.log(data);
+            var $videoList = $('<div class="every_video"></div>');
             data.data.forEach(function (ele) {
                 every_videoId++;
-                var $videoItem = $('<div class="video_item every_video" id=' + ele.id + '></div>');
+                var $videoItem = $('<div class="video_item" id=' + ele.id + '></div>');
                 var $img = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');
                 // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
                 var $author = $('<p class="author">作者:' + ele.real_name + '</p>');
                 var $title = $('<p class="title">' + ele.title + '</p>');
-                var $comment = $('<p class="zkpl"><span class="author">展开评论</span><img src="../public/images/xxx.png" alt="error"></p>');
+                var $comment = $('<p class="zkpl"><span">展开评论</span><img src="../public/images/xxx.png" alt="error"></p>');
                 $videoItem.append($title).append($author).append($img).append($comment);
-                $("section").append($videoItem);
+                $videoList.append($videoItem);
             });
+            $("section").append($videoList);
             if (data.data.length < 10) {
                 $('#loading').hide();
                 $('#no_more').show();
@@ -102,16 +173,24 @@ $(function () {
                             // console.log(ele);
                             if (type == "every_video") {
                                 every_videoId++;
+                                var $videoItem = $('<div class="video_item" id="'+ele.id+'"></div>');
+                                var $img = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');
+                                // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
+                                var $author = $('<p class="author">作者:' + ele.real_name + '</p>');
+                                var $title = $('<p class="title">' + ele.title + '</p>');
+                                $videoItem.append($title).append($img).append($author);
+                                $(".every_video").append($videoItem);
                             } else if (type == "my_video") {
                                 my_videoId++;
+                                var $myVideoItem = $('<div class="video_item" id="'+ele.id+'"></div>');
+                                var $myImg = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');
+                                // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
+                                var $myAuthor = $('<p class="author">作者:' + ele.real_name + '</p>');
+                                var $myTitle = $('<p class="title">' + ele.title + '</p>');
+                                $myVideoItem.append($myTitle).append($myImg).append($myAuthor);
+                                $(".my_video").append($myVideoItem);
                             }
-                            var $videoItem = $('<div class="video_item ' + type + '"></div>');
-                            var $img = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');
-                            // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
-                            var $author = $('<p class="author">作者:' + ele.real_name + '</p>');
-                            var $title = $('<p class="title">' + ele.title + '</p>');
-                            $videoItem.append($title).append($img).append($author);
-                            $("section").append($videoItem);
+
                         });
                         if (data.data.length < 10) {
                             $('#loading').hide();
@@ -155,19 +234,23 @@ $(function () {
                     type = "my_video";
                     $.ajax({
                         type: "GET",
-                        url: "http://127.0.0.1:2245/myVideoList?videoId=0&&userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token"),
+                        url: "http://127.0.0.1:2245/myVideoList",
                         async: true,
+                        data: "videoId=0&&userId=" + window.localStorage.getItem('userId') + "&&token=" + window.localStorage.getItem('token'),
                         success: function (data) {
                             //console.log(data);
+                            var $myVideoList = $('<div class="my_video"></div>');
                             data.data.forEach(function (ele) {
-                                every_videoId++;
-                                var $videoItem = $('<div class="video_item every_video"></div>');
-                                var $img = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');                                // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
-                                var $author = $('<p class="author">作者:' + ele.real_name + '</p>');
-                                var $title = $('<p class="title">' + ele.title + '</p>');
-                                $videoItem.append($title).append($img).append($author);
-                                $("section").append($videoItem);
+                                my_videoId++;
+                                var $myVideoItem = $('<div class="video_item" id=' + ele.id + '></div>');
+                                var $myImg = $('<video src="../' + ele.video + '"controls="controls">您的浏览器不支持 video 标签。</video>');                                // var $img = $('<embed src="../'+ele.video+'" style="height:240px;width:320px" type="audio/mpeg" autostart="1" loop="0">');
+                                var $myAuthor = $('<p class="author">作者:' + ele.real_name + '</p>');
+                                var $myTitle = $('<p class="title">' + ele.title + '</p>');
+                                var $myComment = $('<p class="zkpl"><span">展开评论</span><img src="../public/images/xxx.png" alt="error"></p>');
+                                $myVideoItem.append($myTitle).append($myImg).append($myAuthor).append($myComment);
+                                $myVideoList.append($myVideoItem);
                             });
+                            $("section").append($myVideoList);
                             if (data.data.length < 10) {
                                 $('#loading').hide();
                                 $('#no_more').show();
@@ -203,7 +286,8 @@ $(function () {
     $("#login-btn").on("click", function () {
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:2245/login?username=" + $("#username").val() + "&&password=" + $("#password").val(),
+            url: "http://127.0.0.1:2245/login",
+            data: "username=" + $("#username").val() + "&&password=" + $("#password").val(),
             async: true,
             beforeSend: function () {
                 console.log("正在登录,请稍候");
