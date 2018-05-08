@@ -142,7 +142,7 @@ $(function () {
                 $('#loading').hide();
                 $('#no_more').show();
             }
-            // $("#login").click();
+            // $("#profile").click();
         }
     });
 
@@ -278,6 +278,7 @@ $(function () {
                 $("#loading").hide();
                 $("#no_more").hide();
                 $(".profile").show();
+                refreshProfile();
                 break;
         }
     });
@@ -412,5 +413,23 @@ $(function () {
 
     });
 
-
+    var refreshProfile = function () {
+        if (window.localStorage.getItem("token")){
+            $.ajax({
+                url: "http://127.0.0.1:2245/getInfo",
+                async:true,
+                type: "GET",
+                dataType:"json",
+                data: "userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token"),
+                success: function(data){
+                    // alert( "Data Saved: " + data );
+                    console.log(data);
+                    $("#profileList:first-child").text("昵称:"+data.data.realname);
+                    $("#profileList:first-child").next().text("性别:"+data.data.gender);
+                    $("#profileList:first-child").next().next().text("电话:"+data.data.phone);
+                    $("#profileList:first-child").next().next().next().text("邮箱:"+data.data.email);
+                }
+            });
+        }
+    }
 });

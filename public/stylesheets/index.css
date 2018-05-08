@@ -165,3 +165,23 @@ input:-ms-input-placeholder { /* Internet Explorer 10+ */
     color: red;
     cursor:pointer;
 }
+.profile p{
+    /*text-align: center;*/
+}
+.profile-board {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    padding: 30px;
+    background-color: #fff;
+    margin: 10px auto;
+    border-radius: 12px;
+}
+.avatar{
+    float: right;
+}
+.profileFloat{
+    margin-left: 110px;
+    float: left;
+}
