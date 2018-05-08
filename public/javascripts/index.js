@@ -413,6 +413,7 @@ $(function () {
 
     });
 
+    //更新页面个人信息页
     var refreshProfile = function () {
         if (window.localStorage.getItem("token")){
             $.ajax({
@@ -423,13 +424,16 @@ $(function () {
                 data: "userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token"),
                 success: function(data){
                     // alert( "Data Saved: " + data );
-                    console.log(data);
-                    $("#profileList:first-child").text("昵称:"+data.data.realname);
-                    $("#profileList:first-child").next().text("性别:"+data.data.gender);
-                    $("#profileList:first-child").next().next().text("电话:"+data.data.phone);
-                    $("#profileList:first-child").next().next().next().text("邮箱:"+data.data.email);
+                    console.log(data.data);
+                    console.log($("#profileList").next().children().first().children().first());
+                    $("#profileList > p").first().text("昵称:"+data.data.realName);
+                    $("#profileList > p").first().next().text("性别:"+data.data.gender);
+                    $("#profileList > p").first().next().next().text("电话:"+data.data.phone);
+                    $("#profileList > p").first().next().next().next().text("邮箱:"+data.data.email);
+                    $("#profileList").next().children().first().children().first().attr("src",'.'+data.data.avatar);
                 }
             });
         }
     }
+
 });
