@@ -188,6 +188,7 @@ input:-ms-input-placeholder { /* Internet Explorer 10+ */
     background-color: #fff;
     margin: 10px auto;
     border-radius: 12px;
+    z-index: 1;
 }
 .avatar{
     float: right;
@@ -249,4 +250,7 @@ li label,li input{
     height: 100px;
     cursor:pointer;
     /*background: url("../images/+.jpg") no-repeat center;*/
+}
+.file-modal{
+    display: none;
 }

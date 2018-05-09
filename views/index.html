@@ -13,9 +13,13 @@
     <header>
         <div id="title">
             <span>四川大学视频共享平台</span>
+
             <p class="choice" id="profile"></p>
+
             <p class="choice" id="login">登录/注册</p>
+
             <p class="choice" id="my_video">我的视频</p>
+
             <p class="choice active" id="every_video">全部视频</p>
         </div>
     </header>
@@ -29,15 +33,19 @@
         <div class="profile">
             <div class="profile-board">
                 <h1>个人信息</h1><span class="profile-change-btn">修改</span>
+
                 <div class="over_flow">
                     <div class="profileFloat" id="profileList">
                         <p>昵称:NULL</p>
+
                         <p>性别:NULL</p>
+
                         <p>电话:NULL</p>
+
                         <p>邮箱:NULL</p>
                     </div>
                     <div class="profileFloat">
-                        <p class="avatar" title="修改头像"><img src="../avatar/loading.jpg" width="100px" alt=""></p>
+                        <p class="avatar" title="修改头像"><img src="../avatar/loading.gif" width="100px" alt=""></p>
                     </div>
                 </div>
                 <input type="button" value="注销" id="logout-btn">
@@ -49,10 +57,11 @@
                 <div class="form-group">
                     <label for="inputFile">上传头像</label>
                     <input name='inputFile' type='file' id="inputFile" required/>
+
                     <p class="help-block">请确认上传的文件是否是png图片.</p>
                 </div>
-                <input type="button" value="确定" id="upload" >
-                <input type="button" value="取消" id="unUpload" >
+                <input type="button" value="确定" id="upload">
+                <input type="button" value="取消" id="unUpload">
 
             </div>
         </div>
@@ -79,20 +88,26 @@
                         </li>
                     </ul>
                 </div>
-                <input type="button" value="确定" id="change-profile" >
-                <input type="button" value="取消" id="noChange-profile" >
+                <input type="button" value="确定" id="change-profile">
+                <input type="button" value="取消" id="noChange-profile">
             </div>
         </div>
         <div class="file-modal">
             <div class="curtain"></div>
             <div class="change-board">
                 <div class="form-group">
-                    <label for="inputFile">上传文件</label>
-                    <input name='inputFile' type='file' id="upload-video" required/>
-                    <p class="help-block">请确认上传的文件是否是png图片.</p>
+                    <ul>
+                        <li>
+                            <input type="text" id="fileTitle" placeholder="视频标题"/>
+                        </li>
+                        <li>
+                            <input name='inputFile' type='file' id="upload-video" required/>
+                        </li>
+                    </ul>
+                    <p class="help-block">请确认上传的文件是否是mp4视频.</p>
                 </div>
-                <input type="button" value="确定" id="uploadVideo" >
-                <input type="button" value="取消" id="unUploadVideo" >
+                <input type="button" value="确定" id="uploadVideo">
+                <input type="button" value="取消" id="unUploadVideo">
             </div>
         </div>
         <div class="newVideo">
@@ -103,6 +118,7 @@
     <footer>
         <div class="loading" id="loading">loading......</div>
         <p class="loading" id="no_more">没有更多了...</p>
+
         <div id="footer"></div>
     </footer>
 </div>

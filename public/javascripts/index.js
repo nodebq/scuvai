@@ -7,6 +7,31 @@ $(function () {
     var my_videoId = 0;
     var type = 'every_video';
 
+    //更新页面个人信息页
+    var refreshProfile = function () {
+        if (window.localStorage.getItem("token")){
+            $.ajax({
+                url: "http://127.0.0.1:2245/getInfo",
+                async:true,
+                type: "GET",
+                dataType:"json",
+                data: "userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token"),
+                success: function(data){
+                    // alert( "Data Saved: " + data );
+                    // console.log(data.data);
+                    // console.log($("#profileList").next().children().first().children().first());
+                    $("#profileList > p").first().text("昵称:"+data.data.realName);
+                    $("#profileList > p").first().next().text("性别:"+data.data.gender);
+                    $("#profileList > p").first().next().next().text("电话:"+data.data.phone);
+                    $("#profileList > p").first().next().next().next().text("邮箱:"+data.data.email);
+                    $("#profileList").next().children().first().children().first().attr("src",'.'+data.data.avatar);
+                    $("#profile").text(data.data.realName);
+                    window.localStorage.setItem("nickname",data.data.realName)
+                }
+            });
+        }
+    };
+
     //展开评论
     $("section").on("click", ".zkpl", function () {
         var mt = $(this).parent();
@@ -113,6 +138,7 @@ $(function () {
 
     //判断登录状态
     if (window.localStorage.getItem("token")) {
+        refreshProfile();
         $("#login").hide().prev().show().text(window.localStorage.getItem("nickname"));
     } else {
     }
@@ -302,7 +328,7 @@ $(function () {
                     window.localStorage.setItem("userId", data.data[0]);
                     window.localStorage.setItem("token", data.data[1]);
                     window.localStorage.setItem("username", $("#username").val());
-                    window.localStorage.setItem("nickname", data.data[2]);
+                    refreshProfile();
                     $("#login").hide().prev().show().text(data.data[2]);
 
                     setTimeout(function () {
@@ -317,7 +343,79 @@ $(function () {
         });
     });
 
-    //头像上传
+    //视频上传
+    $("#uploadVideo").on("click", function () {
+        var url = 'http://localhost:2245/video';
+        var formDataVideo = new FormData();
+        // console.log($("#inputFile")[0].files[0]);
+        // var uploadName = $("#inputFile").attr("name");
+        formDataVideo.append('file', $("#upload-video")[0].files[0]);
+        formDataVideo.append('userId', window.localStorage.getItem("userId"));
+        formDataVideo.append('token', window.localStorage.getItem("token"));
+        formDataVideo.append('realName', window.localStorage.getItem("nickname"));
+        formDataVideo.append('title', $("#fileTitle").val());
+        // formData.append("name",uploadName);
+        $.ajax({
+            url: url,
+            async: true,//是否异步
+            dataType: "json",
+            type: "POST",
+            data: formDataVideo,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                // console.log("正在进行,请稍候");
+                $("#upload-v").text("正在上传").attr('disabled', 'true');
+                $("#upload-video").attr('disabled', 'true');
+            },
+            success: function (responseStr) {
+                if (responseStr.code === 200) {
+                    // console.log("成功", responseStr);
+                    $("#uploadVideo").val("上传成功").attr('disabled', 'true');
+                    $("#upload-video").attr('disabled', 'true');
+                    setTimeout(function () {
+                        window.location.reload()
+                    },1000);
+                } else {
+                    // console.log("失败", responseStr);
+                    $("#uploadVideo").val("上传失败").removeAttr()('disabled');
+                    $("#upload-video").removeAttr()('disabled');
+                    setTimeout(function () {
+                        $("#uploadVideo").val("确定");
+                    },1000);
+                }
+            },
+            error: function (responseStr) {
+                console.log(responseStr);
+                console.log("error");
+            }
+        });
+    });
+    $("#newVideo").on("click", function () {
+        $(".file-modal").show();
+    });
+
+
+    //注销操作
+    $("#logout-btn").on("click", function () {
+        window.localStorage.clear();
+        $(this).val("正在注销");
+        setTimeout(function () {
+            setTimeout(function () {
+                $(this).val("注销成功");
+            }, 500);
+            window.location.reload();
+        }, 500);
+
+    });
+
+    //修改头像
+    $(".avatar").on("click",function () {
+        $('.avatar-modal').show();
+    });
+    $("#unUpload").on("click",function () {
+        $('.avatar-modal').hide();
+    });
     $("#upload").on("click", function () {
         var url = 'http://localhost:2245/upload';
         var formData = new FormData();
@@ -359,93 +457,6 @@ $(function () {
                 console.log("error");
             }
         });
-    });
-
-    //视频上传
-    $("#upload-v").on("click", function () {
-        var url = 'http://localhost:2245/video';
-        var formDataVideo = new FormData();
-        // console.log($("#inputFile")[0].files[0]);
-        // var uploadName = $("#inputFile").attr("name");
-        formDataVideo.append('file', $("#upload-video")[0].files[0]);
-        formDataVideo.append('userId', userId);
-        formDataVideo.append('token', token);
-        formDataVideo.append('realName', 'bb');
-        formDataVideo.append('title', '题目');
-        // formData.append("name",uploadName);
-        $.ajax({
-            url: url,
-            async: true,//是否异步
-            dataType: "json",
-            type: "POST",
-            data: formDataVideo,
-            processData: false,
-            contentType: false,
-            beforeSend: function () {
-                // console.log("正在进行,请稍候");
-                $("#upload-v").text("正在上传").attr('disabled', 'true');
-                $("#upload-video").attr('disabled', 'true');
-            },
-            success: function (responseStr) {
-                if (responseStr.code === 200) {
-                    // console.log("成功", responseStr);
-                    $("#upload-v").text("上传成功").attr('disabled', 'true');
-                    $("#upload-video").attr('disabled', 'true');
-                } else {
-                    // console.log("失败", responseStr);
-                    $("#upload-v").text("上传失败").attr('disabled', 'false');
-                    $("#upload-video").attr('disabled', 'false');
-                }
-            },
-            error: function (responseStr) {
-                console.log(responseStr);
-                console.log("error");
-            }
-        });
-    });
-
-    //注销操作
-    $("#logout-btn").on("click", function () {
-        window.localStorage.clear();
-        $(this).val("正在注销");
-        setTimeout(function () {
-            setTimeout(function () {
-                $(this).val("注销成功");
-            }, 500);
-            window.location.reload();
-        }, 500);
-
-    });
-
-    //更新页面个人信息页
-    var refreshProfile = function () {
-        if (window.localStorage.getItem("token")){
-            $.ajax({
-                url: "http://127.0.0.1:2245/getInfo",
-                async:true,
-                type: "GET",
-                dataType:"json",
-                data: "userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token"),
-                success: function(data){
-                    // alert( "Data Saved: " + data );
-                    // console.log(data.data);
-                    // console.log($("#profileList").next().children().first().children().first());
-                    $("#profileList > p").first().text("昵称:"+data.data.realName);
-                    $("#profileList > p").first().next().text("性别:"+data.data.gender);
-                    $("#profileList > p").first().next().next().text("电话:"+data.data.phone);
-                    $("#profileList > p").first().next().next().next().text("邮箱:"+data.data.email);
-                    $("#profileList").next().children().first().children().first().attr("src",'.'+data.data.avatar);
-                }
-            });
-        }
-    };
-
-    //修改头像
-    $(".avatar").on("click",function () {
-        $('.avatar-modal').show();
-    });
-    $("#unUpload").on("click",function () {
-        $('.avatar-modal').hide();
     });
 
     //修改个人信息
