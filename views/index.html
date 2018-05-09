@@ -28,18 +28,63 @@
         </div>
         <div class="profile">
             <div class="profile-board">
-                <h1>个人信息</h1>
-                <div class="profileFloat" id="profileList">
-                    <p>昵称:NULL</p>
-                    <p>性别:NULL</p>
-                    <p>电话:NULL</p>
-                    <p>邮箱:NULL</p>
-                </div>
-                <div class="profileFloat">
-                    <p class="avatar"><img src="../public/images/xxx.png" width="100px" alt=""></p>
+                <h1>个人信息</h1><span class="profile-change-btn">修改</span>
+                <div class="over_flow">
+                    <div class="profileFloat" id="profileList">
+                        <p>昵称:NULL</p>
+                        <p>性别:NULL</p>
+                        <p>电话:NULL</p>
+                        <p>邮箱:NULL</p>
+                    </div>
+                    <div class="profileFloat">
+                        <p class="avatar" title="修改头像"><img src="../avatar/loading.jpg" width="100px" alt=""></p>
+                    </div>
                 </div>
                 <input type="button" value="注销" id="logout-btn">
             </div>
+        </div>
+        <div class="avatar-modal">
+            <div class="curtain"></div>
+            <div class="change-board">
+                <div class="form-group">
+                    <label for="inputFile">上传头像</label>
+                    <input name='inputFile' type='file' id="inputFile" required/>
+                    <p class="help-block">请确认上传的文件是否是png图片.</p>
+                </div>
+                <input type="button" value="确定" id="upload" >
+                <input type="button" value="取消" id="unUpload" >
+
+            </div>
+        </div>
+        <div class="profile-modal">
+            <div class="curtain"></div>
+            <div class="change-board">
+                <div class="form-group">
+                    <ul>
+                        <li>
+                            <label for="nickname">昵称:</label>
+                            <input name='nickname' type='text' id="nickname" required/>
+                        </li>
+                        <li>
+                            <label for="gender">性别:</label>
+                            <input name='gender' type='text' id="gender" required/>
+                        </li>
+                        <li>
+                            <label for="phone">电话:</label>
+                            <input name='phone' type='text' id="phone" required/>
+                        </li>
+                        <li>
+                            <label for="email">邮箱:</label>
+                            <input name='email' type='text' id="email" required/>
+                        </li>
+                    </ul>
+                </div>
+                <input type="button" value="确定" id="change-profile" >
+                <input type="button" value="取消" id="noChange-profile" >
+            </div>
+        </div>
+        <div class="newVideo">
+            <!--<img src="../public/images/+.jpg" alt="">-->
         </div>
     </section>
     <!--页脚-->

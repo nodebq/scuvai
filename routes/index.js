@@ -62,13 +62,6 @@ router.post('/upload', function (req, res, next) {
 
 router.post('/video', function (req, res, next) {
     //上传视频
-    // req.query.userId = 1;
-    // console.log(req.body);
-    // console.log(req.query);
-    // req.query.type = 1;
-    // res.end('666');
-    // return 0;
-    // console.log(req);
     upload.video(req, res);
 });
 

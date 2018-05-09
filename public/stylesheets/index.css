@@ -178,10 +178,74 @@ input:-ms-input-placeholder { /* Internet Explorer 10+ */
     margin: 10px auto;
     border-radius: 12px;
 }
+.change-board {
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    padding: 30px;
+    background-color: #fff;
+    margin: 10px auto;
+    border-radius: 12px;
+}
 .avatar{
     float: right;
 }
 .profileFloat{
     margin-left: 110px;
     float: left;
+}
+.over_flow{
+    overflow: hidden;
+}
+.avatar{
+    cursor:pointer;
+}
+.curtain{
+    background-color: rgba(0,0,0,0.5);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.avatar-modal{
+    display: none;
+}
+h1 {
+    display: inline-block;
+}
+.profile-change-btn{
+    float: right;
+    color: blue;
+    cursor:pointer;
+}
+.change-board input{
+    /*margin: auto;*/
+    font-size: 24px;
+    line-height: 24px;
+    display: inline-block;
+    text-align: center;
+}
+.profile-modal{
+    display: none;
+}
+
+li{
+    list-style:none;
+    margin: 60px auto;
+}
+li label,li input{
+    font-size: 24px;
+    line-height: 24px;
+}
+.newVideo{
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    z-index: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    background: url("../images/+.jpg") no-repeat center;
 }

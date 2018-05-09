@@ -71,8 +71,8 @@ $(function () {
                 data: "videoId=" + $commentBtn.parent().parent().parent().attr("id") + "&&comment=" + $commentBtn.prev().val() + "&&userId=" + window.localStorage.getItem('userId') + "&&token=" + window.localStorage.getItem('token') + "&&realName=" + window.localStorage.getItem('nickname'),
                 success: function (data) {
                     // alert( "Data Saved: " + data );
-                    console.log(data);
-                    console.log($commentBtn.parent().prev());
+                    // console.log(data);
+                    // console.log($commentBtn.parent().prev());
                     var $myComment = '<p class="comment_item fdfdW"><span>你:' + $commentBtn.prev().val() + '</span></p>';
                     $commentBtn.parent().prev().before($myComment);
                     $commentBtn.text("评论成功").attr('disabled', 'false').prev().attr('readonly', 'readonly');
@@ -98,7 +98,7 @@ $(function () {
             data: "userId=" + window.localStorage.getItem('userId') + "&&token=" + window.localStorage.getItem('token') + "&&commentId=" + $commentDelBtn.parent().attr("id"),
             success: function (data) {
                 // alert( "Data Saved: " + data );
-                console.log(data);
+                // console.log(data);
                 // var $myComment = '<p class="comment_item fdfdW"><span>你:' + $commentBtn.prev().val() + '</span></p>';
                 // $commentBtn.parent().prev().before($myComment);
                 // $commentBtn.text("评论成功").attr('disabled', 'false').prev().attr('readonly', 'readonly');
@@ -163,7 +163,7 @@ $(function () {
                 } else if (type == "my_video") {
                     var url = "http://127.0.0.1:2245/myVideoList?videoId=" + my_videoId + "&&userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token");
                 }
-                console.log('底部');
+                // console.log('底部');
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -291,14 +291,14 @@ $(function () {
             data: "username=" + $("#username").val() + "&&password=" + $("#password").val(),
             async: true,
             beforeSend: function () {
-                console.log("正在登录,请稍候");
+                // console.log("正在登录,请稍候");
                 $("#login-btn").val("正在登录,请稍等");
                 $("#login-btn").attr('disabled', 'true');
             },
             success: function (data) {
-                console.log(data);
+                // console.log(data);
                 if (data.code == '200') {
-                    console.log("登录成功");
+                    // console.log("登录成功");
                     window.localStorage.setItem("userId", data.data[0]);
                     window.localStorage.setItem("token", data.data[1]);
                     window.localStorage.setItem("username", $("#username").val());
@@ -318,14 +318,14 @@ $(function () {
     });
 
     //头像上传
-    $("#upload").on("click", function () {//
+    $("#upload").on("click", function () {
         var url = 'http://localhost:2245/upload';
         var formData = new FormData();
         // console.log($("#inputFile")[0].files[0]);
         // var uploadName = $("#inputFile").attr("name");
         formData.append('file', $("#inputFile")[0].files[0]);
-        formData.append('userId', userId);
-        formData.append('token', token);
+        formData.append('userId', window.localStorage.getItem("userId"));
+        formData.append('token', window.localStorage.getItem("token"));
         $.ajax({
             url: url,
             async: true,//是否异步
@@ -335,18 +335,22 @@ $(function () {
             processData: false,
             contentType: false,
             beforeSend: function () {
-                console.log("正在进行,请稍候");
-                $("#upload").text("正在上传").attr('disabled', 'true');
+                // console.log("正在进行,请稍候");
+                $("#upload").val("正在上传").attr('disabled', 'true');
                 $("#inputFile").attr('disabled', 'true');
             },
             success: function (responseStr) {
                 if (responseStr.code === 200) {
-                    console.log("成功", responseStr);
-                    $("#upload").text("上传成功").attr('disabled', 'true');
+                    // console.log("成功", responseStr);
+                    $("#upload").val("上传成功").attr('disabled', 'true');
                     $("#inputFile").attr('disabled', 'true');
+                    setTimeout(function () {
+                        $('.avatar-modal').hide();
+                        refreshProfile();
+                    },1000);
                 } else {
-                    console.log("失败", responseStr);
-                    $("#upload").text("上传失败").attr('disabled', 'false');
+                    // console.log("失败", responseStr);
+                    $("#upload").val("上传失败").attr('disabled', 'false');
                     $("#inputFile").attr('disabled', 'false');
                 }
             },
@@ -358,7 +362,7 @@ $(function () {
     });
 
     //视频上传
-    $("#upload-v").on("click", function () {//
+    $("#upload-v").on("click", function () {
         var url = 'http://localhost:2245/video';
         var formDataVideo = new FormData();
         // console.log($("#inputFile")[0].files[0]);
@@ -378,17 +382,17 @@ $(function () {
             processData: false,
             contentType: false,
             beforeSend: function () {
-                console.log("正在进行,请稍候");
+                // console.log("正在进行,请稍候");
                 $("#upload-v").text("正在上传").attr('disabled', 'true');
                 $("#upload-video").attr('disabled', 'true');
             },
             success: function (responseStr) {
                 if (responseStr.code === 200) {
-                    console.log("成功", responseStr);
+                    // console.log("成功", responseStr);
                     $("#upload-v").text("上传成功").attr('disabled', 'true');
                     $("#upload-video").attr('disabled', 'true');
                 } else {
-                    console.log("失败", responseStr);
+                    // console.log("失败", responseStr);
                     $("#upload-v").text("上传失败").attr('disabled', 'false');
                     $("#upload-video").attr('disabled', 'false');
                 }
@@ -424,8 +428,8 @@ $(function () {
                 data: "userId=" + window.localStorage.getItem("userId") + "&&token=" + window.localStorage.getItem("token"),
                 success: function(data){
                     // alert( "Data Saved: " + data );
-                    console.log(data.data);
-                    console.log($("#profileList").next().children().first().children().first());
+                    // console.log(data.data);
+                    // console.log($("#profileList").next().children().first().children().first());
                     $("#profileList > p").first().text("昵称:"+data.data.realName);
                     $("#profileList > p").first().next().text("性别:"+data.data.gender);
                     $("#profileList > p").first().next().next().text("电话:"+data.data.phone);
@@ -434,6 +438,52 @@ $(function () {
                 }
             });
         }
-    }
+    };
 
+    //修改头像
+    $(".avatar").on("click",function () {
+        $('.avatar-modal').show();
+    });
+    $("#unUpload").on("click",function () {
+        $('.avatar-modal').hide();
+    });
+
+    //修改个人信息
+    $(".profile-change-btn").on("click",function () {
+        $(".profile-modal").show();
+        $("#nickname").val($("#profileList > p").first().text().split(":")[1]);
+        $("#gender").val($("#profileList > p").first().next().text().split(":")[1]);
+        $("#phone").val($("#profileList > p").first().next().next().text().split(":")[1]);
+        $("#email").val($("#profileList > p").first().next().next().next().text().split(":")[1]);
+    });
+    $("#noChange-profile").on("click",function () {
+        $(".profile-modal").hide();
+    });
+    $("#change-profile").on("click",function () {
+        console.log(1);
+        $.ajax({
+            url: "http://127.0.0.1:2245/setInfo",
+            async:true,
+            type: "GET",
+            dataType:"json",
+            data: "userId="+window.localStorage.getItem("userId")
+            +"&&token="+window.localStorage.getItem("token")
+            +"&&realName="+$("#nickname").val()
+            +"&&gender="+$("#gender").val()
+            +"&&phone="+$("#phone").val()
+            +"&&email="+$("#email").val(),
+            success: function(data){
+                console.log(data);
+                $("#change-profile").val("修改成功").attr("disabled", "disabled");
+                setTimeout(function () {
+                    $(".profile-modal").hide();
+                    $("#change-profile").val("确定").removeAttr("disabled");
+                    refreshProfile();
+                },1000);
+            },
+            error:function (jqXHR) {
+                console.log(jqXHR);
+            }
+        });
+    })
 });
