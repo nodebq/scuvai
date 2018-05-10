@@ -47,7 +47,7 @@ login.do = function (req, res) {
                         res.end(fyscu.out(code.checkPasswordFailed));
                     }
                 } else {
-                    console.log('用户名存在');
+                    console.log('用户名不存在');
                     res.end(fyscu.out(code.checkUsernameFailed));
                 }
             }
