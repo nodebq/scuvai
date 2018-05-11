@@ -115,12 +115,13 @@ input:-ms-input-placeholder { /* Internet Explorer 10+ */
     width: calc(100% - 50px);
 }
 .login>input{
-    margin:15vh auto;
+    margin:10vh auto;
 
     border-radius: 5px;
     font-size: 20px;
 }
-#login-btn,#logout-btn{
+#login-btn,#logout-btn,#register-btn,{
+    display: block;
     border-radius: 50px;
     cursor: pointer;
 }
@@ -188,6 +189,7 @@ input:-ms-input-placeholder { /* Internet Explorer 10+ */
     background-color: #fff;
     margin: 10px auto;
     border-radius: 12px;
+    z-index: 1;
 }
 .avatar{
     float: right;
@@ -249,4 +251,11 @@ li label,li input{
     height: 100px;
     cursor:pointer;
     /*background: url("../images/+.jpg") no-repeat center;*/
+}
+.file-modal{
+    display: none;
+}
+
+#register-btn,#nickname_input{
+    display: none;
 }
